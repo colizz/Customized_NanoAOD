@@ -74,7 +74,7 @@ def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, add
 
 
 def nanoTuples_customizeData(process):
-    process = nanoTuples_customizeCommon(process, False)
+    process = nanoTuples_customizeCommon(process, False, addAK15=False,)
 
     process.NANOAODoutput.fakeNameForCrab = cms.untracked.bool(True)  # hack for crab publication
     process.add_(cms.Service("InitRootHandlers", EnableIMT=cms.untracked.bool(False)))
