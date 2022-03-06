@@ -48,9 +48,23 @@ def nanoTuples_addDeepAK8RawScore(process, addDeepAK8Probs=False):
 
     return process
 
+def nanoTuples_addParticleNetRawScore(process, addParticleNetProbs=False):
+    if addParticleNetProbs:
+        # add ParticleNet raw scores: nominal
+        from RecoBTag.ONNXRuntime.pfParticleNet_cff import _pfParticleNetJetTagsProbs
+        for prob in _pfParticleNetJetTagsProbs:
+            name = prob.split(':')[1]
+            setattr(process.fatJetTable.variables, 'ParticleNetraw_' + name, Var("bDiscriminator('%s')" % prob, float, doc=prob, precision=-1))
 
+        # add ParticleNet raw scores: mass decorrelated
+        from RecoBTag.ONNXRuntime.pfParticleNet_cff import _pfMassDecorrelatedParticleNetJetTagsProbs
+        for prob in _pfMassDecorrelatedParticleNetJetTagsProbs:
+            name = prob.split(':')[1]
+            setattr(process.fatJetTable.variables, 'ParticleNetMDraw_' + name, Var("bDiscriminator('%s')" % prob, float, doc=prob, precision=-1))
 
-def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, addAK8HWW=True, addPFcands=False,  AddDeepAK8RawScore=True):
+    return process
+
+def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, addAK8HWW=True, addPFcands=False,  AddDeepAK8RawScore=True, addParticleNetRawScore=True):
     pfcand_params = {'srcs': [], 'isPuppiJets':[], 'jetTables':[]}
     if addAK15:
         setupAK15(process, runOnMC=runOnMC, runParticleNet=False, runParticleNetMD=True)
@@ -68,10 +82,12 @@ def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, add
         pfcand_params['isPuppiJets'].append(True)
         pfcand_params['jetTables'].append('fatJetTable')
     if addPFcands:
-        addPFCands(process, outTableName='PFCands', **pfcand_params)
+            addPFCands(process, outTableName='PFCands', **pfcand_params)
 
     if AddDeepAK8RawScore:
-       nanoTuples_addDeepAK8RawScore(process, addDeepAK8Probs=True) 
+        nanoTuples_addDeepAK8RawScore(process, addDeepAK8Probs=True)
+    if addParticleNetRawScore:
+        nanoTuples_addParticleNetRawScore(process, addParticleNetProbs=True)
     # nanoTuples_customizeVectexTable(process)
     # nanoTuples_customizeFatJetTable(process, runOnMC=runOnMC)
 
@@ -87,7 +103,7 @@ def nanoTuples_customizeData(process):
 
 
 def nanoTuples_customizeMC(process):
-    process = nanoTuples_customizeCommon(process, True, addAK15=True, addAK8=False, addPFcands=False, AddDeepAK8RawScore=True)
+    process = nanoTuples_customizeCommon(process, True, addAK15=True, addAK8=False, addPFcands=False, AddDeepAK8RawScore=True, addParticleNetRawScore=True)
 
     process.NANOAODSIMoutput.fakeNameForCrab = cms.untracked.bool(True)  # hack for crab publication
     process.add_(cms.Service("InitRootHandlers", EnableIMT=cms.untracked.bool(False)))
