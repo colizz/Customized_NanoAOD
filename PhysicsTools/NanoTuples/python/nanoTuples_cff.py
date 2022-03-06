@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.NanoAOD.common_cff import Var
 from PhysicsTools.NanoTuples.ak15_cff import setupAK15
-from PhysicsTools.NanoTuples.ak8_cff import addParticleNetAK8
+from PhysicsTools.NanoTuples.ak8_cff import addParticleNetAK8, addDeepHWWAK8
 from PhysicsTools.NanoTuples.pfcands_cff import addPFCands
 
 
@@ -50,7 +50,7 @@ def nanoTuples_addDeepAK8RawScore(process, addDeepAK8Probs=False):
 
 
 
-def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, addPFcands=False, AddDeepAK8RawScore=True):
+def nanoTuples_customizeCommon(process, runOnMC, addAK15=False, addAK8=False, addAK8HWW=True, addPFcands=False,  AddDeepAK8RawScore=True):
     pfcand_params = {'srcs': [], 'isPuppiJets':[], 'jetTables':[]}
     if addAK15:
         setupAK15(process, runOnMC=runOnMC, runParticleNet=False, runParticleNetMD=True)
@@ -59,6 +59,11 @@ def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, add
         pfcand_params['jetTables'].append('ak15Table')
     if addAK8:
         addParticleNetAK8(process, runParticleNet=False, runParticleNetMD=True)
+        pfcand_params['srcs'].append('updatedJetsAK8WithUserData')
+        pfcand_params['isPuppiJets'].append(True)
+        pfcand_params['jetTables'].append('fatJetTable')
+    if addAK8HWW:
+        addDeepHWWAK8(process, version='V1')
         pfcand_params['srcs'].append('updatedJetsAK8WithUserData')
         pfcand_params['isPuppiJets'].append(True)
         pfcand_params['jetTables'].append('fatJetTable')
