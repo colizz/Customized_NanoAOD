@@ -50,7 +50,7 @@ def nanoTuples_addDeepAK8RawScore(process, addDeepAK8Probs=False):
 
 
 
-def nanoTuples_customizeCommon(process, runOnMC, addAK15=False, addAK8=False, addAK8HWW=True, addPFcands=False,  AddDeepAK8RawScore=True):
+def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, addAK8HWW=True, addPFcands=False,  AddDeepAK8RawScore=True):
     pfcand_params = {'srcs': [], 'isPuppiJets':[], 'jetTables':[]}
     if addAK15:
         setupAK15(process, runOnMC=runOnMC, runParticleNet=False, runParticleNetMD=True)
