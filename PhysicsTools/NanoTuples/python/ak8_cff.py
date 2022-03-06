@@ -62,6 +62,32 @@ def addParticleNetAK8(process, runParticleNet=False, runParticleNetMD=True):
     return process
 
 
+def addDeepHWWAK8(process, version='V1'):
+    if version == 'V1':
+        from PhysicsTools.NanoTuples.hwwTagger.pfMassDecorrelatedDeepHWWV1_cff import _pfMassDecorrelatedDeepHWWV1JetTagsAll
+        btagDiscriminators = _pfMassDecorrelatedDeepHWWV1JetTagsAll
+    else:
+        raise NotImplementedError("HWW-MD tagger version does not exist.")
+
+    from PhysicsTools.NanoTuples.jetTools import updateJetCollection as updateJetCollectionCustom
+    JETCorrLevels = ['L2Relative', 'L3Absolute', 'L2L3Residual']
+    # inference the tagger score
+    updateJetCollectionCustom(
+        process,
+        jetSource = cms.InputTag('selectedUpdatedPatJetsAK8WithDeepInfo'),
+        rParam = 0.8,
+        jetCorrections = ('AK8PFPuppi', cms.vstring(JETCorrLevels), 'None'),
+        btagDiscriminators = btagDiscriminators,
+        postfix='AK8WithDeepHWWMD',
+    )
+    process.jetCorrFactorsAK8.src = "selectedUpdatedPatJetsAK8WithDeepHWWMD"
+    process.updatedJetsAK8.jetSource = "selectedUpdatedPatJetsAK8WithDeepHWWMD"
+
+    # add variables to NanoAOD FatJet table
+    for prob in btagDiscriminators: # include all raw scores and tagger discriminants
+        name = 'deepHWWMD' + version + '_' + prob.split(':')[1]
+        setattr(process.fatJetTable.variables, name, Var("bDiscriminator('%s')" % prob, float, doc=prob, precision=-1))
+
 
 # ---------------------------------------------------------
 def setupCustomizedAK8(process, runOnMC=False, path=None):
