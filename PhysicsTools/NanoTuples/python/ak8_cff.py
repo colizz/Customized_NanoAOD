@@ -62,7 +62,7 @@ def addParticleNetAK8(process, runParticleNet=False, runParticleNetMD=True):
     return process
 
 
-def addCustomTagger(process, name):
+def getCustomTaggerDiscriminators(process, name):
     customTaggersAvailableDict = {
         'DeepHWWV1': {
             'cff_path': 'PhysicsTools.NanoTuples.hwwTagger.pfMassDecorrelatedDeepHWWV1_cff',
@@ -72,7 +72,7 @@ def addCustomTagger(process, name):
         'InclParticleTransformerV1': {
             'cff_path': 'PhysicsTools.NanoTuples.hwwTagger.pfMassDecorrelatedInclParticleTransformerV1_cff',
             'disc_name': '_pfMassDecorrelatedInclParticleTransformerV1JetTagsAll',
-            'nano_branch_name': 'inclParTV1',
+            'nano_branch_name': 'inclParTMDV1',
         }
     }
     if name not in customTaggersAvailableDict:
@@ -82,6 +82,15 @@ def addCustomTagger(process, name):
     mod = __import__(cfg['cff_path'], globals(), locals(), [cfg['disc_name']], -1)
     btagDiscriminators = getattr(mod, cfg['disc_name'])
 
+    # add variables to NanoAOD FatJet table
+    for prob in btagDiscriminators: # include all raw scores and tagger discriminants
+        name = cfg['nano_branch_name'] + '_' + prob.split(':')[1]
+        setattr(process.fatJetTable.variables, name, Var("bDiscriminator('%s')" % prob, float, doc=prob, precision=-1))
+
+    return btagDiscriminators
+
+
+def addCustomTagger(process, tag_discs):
     from PhysicsTools.NanoTuples.jetTools import updateJetCollection as updateJetCollectionCustom
     JETCorrLevels = ['L2Relative', 'L3Absolute', 'L2L3Residual']
     # inference the tagger score
@@ -90,16 +99,11 @@ def addCustomTagger(process, name):
         jetSource = cms.InputTag('selectedUpdatedPatJetsAK8WithDeepInfo'),
         rParam = 0.8,
         jetCorrections = ('AK8PFPuppi', cms.vstring(JETCorrLevels), 'None'),
-        btagDiscriminators = btagDiscriminators,
-        postfix='AK8With%s' % name,
+        btagDiscriminators = tag_discs,
+        postfix='AK8WithCustomTagger',
     )
-    process.jetCorrFactorsAK8.src = "selectedUpdatedPatJetsAK8With%s" % name
-    process.updatedJetsAK8.jetSource = "selectedUpdatedPatJetsAK8With%s" % name
-
-    # add variables to NanoAOD FatJet table
-    for prob in btagDiscriminators: # include all raw scores and tagger discriminants
-        name = cfg['nano_branch_name'] + '_' + prob.split(':')[1]
-        setattr(process.fatJetTable.variables, name, Var("bDiscriminator('%s')" % prob, float, doc=prob, precision=-1))
+    process.jetCorrFactorsAK8.src = "selectedUpdatedPatJetsAK8WithCustomTagger"
+    process.updatedJetsAK8.jetSource = "selectedUpdatedPatJetsAK8WithCustomTagger"
 
 
 # ---------------------------------------------------------

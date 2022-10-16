@@ -22,6 +22,7 @@ pfMassDecorrelatedInclParticleTransformerV1JetTags = boostedJetONNXJetTagsProduc
         "probTopbWqq0c", "probTopbWqq1c", "probTopbWq0c", "probTopbWq1c", "probTopbWev", "probTopbWmv", "probTopbWtauhv", "probTopbWtauev", "probTopbWtaumv", # feats 28-36
         "mass", # feats 37
     ] + ['hidNeuron%s' % str(idx).zfill(3) for idx in range(128)], # feats 38-165
+    debugMode = False,
 )
 
 # declare all the discriminators

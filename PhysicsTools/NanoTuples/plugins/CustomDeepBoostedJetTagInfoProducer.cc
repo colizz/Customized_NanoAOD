@@ -487,9 +487,9 @@ void CustomDeepBoostedJetTagInfoProducer::fillParticleFeatures(DeepBoostedJetFea
     // i.e. pfp4: _p4_from_ptetaphie(pfcand_pt_nopuppi, ak.where(fj_eta >= 0, 1, -1) * pfcand_etarel + fj_eta, pfcand_phirel, np.exp(pfcand_e_log_nopuppi))
     ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > pfp4;
     pfp4.SetPt(cand->pt());
-    pfp4.SetEta(candP4.eta() - jet.eta());
+    pfp4.SetEta(candP4.eta());
     pfp4.SetPhi(reco::deltaPhi(candP4, jet));
-    pfp4.SetE(cand->energy());
+    pfp4.SetE(std::exp(std::log(cand->energy())));
     fts.fill("pfcand_px", pfp4.Px());
     fts.fill("pfcand_py", pfp4.Py());
     fts.fill("pfcand_pz", pfp4.Pz());
@@ -551,9 +551,9 @@ void CustomDeepBoostedJetTagInfoProducer::fillSVFeatures(DeepBoostedJetFeatures 
     // temporary workaround for the early training of ParT: recover (px, py, pz, E) by (pt, eta, phi, E)
     ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiE4D<float> > svp4;
     svp4.SetPt(sv->pt());
-    svp4.SetEta(sv->eta() - jet.eta());
+    svp4.SetEta(sv->eta());
     svp4.SetPhi(reco::deltaPhi(*sv, jet));
-    svp4.SetE(sv->energy());
+    svp4.SetE(std::exp(std::log(sv->energy())));
     fts.fill("sv_px", svp4.Px());
     fts.fill("sv_py", svp4.Py());
     fts.fill("sv_pz", svp4.Pz());

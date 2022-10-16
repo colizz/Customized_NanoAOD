@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.NanoAOD.common_cff import Var
 from PhysicsTools.NanoTuples.ak15_cff import setupAK15
-from PhysicsTools.NanoTuples.ak8_cff import addParticleNetAK8, addCustomTagger
+from PhysicsTools.NanoTuples.ak8_cff import addParticleNetAK8, getCustomTaggerDiscriminators, addCustomTagger
 from PhysicsTools.NanoTuples.pfcands_cff import addPFCands
 
 
@@ -76,8 +76,11 @@ def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, add
         pfcand_params['srcs'].append('updatedJetsAK8WithUserData')
         pfcand_params['isPuppiJets'].append(True)
         pfcand_params['jetTables'].append('fatJetTable')
+    tag_discs = []
     for name in customTaggers:
-        addCustomTagger(process, name)
+        tag_discs += getCustomTaggerDiscriminators(process, name)
+    if len(tag_discs) > 0:
+        addCustomTagger(process, tag_discs)
         pfcand_params['srcs'].append('updatedJetsAK8WithUserData')
         pfcand_params['isPuppiJets'].append(True)
         pfcand_params['jetTables'].append('fatJetTable')
