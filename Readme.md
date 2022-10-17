@@ -41,7 +41,7 @@ cmsenv
 ### Use an updated onnxruntime package
 
 ```bash
-bash <(https://raw.githubusercontent.com/colizz/Customized_NanoAOD/master/PhysicsTools/NanoTuples/scripts/install_onnxruntime.sh)
+bash <(curl -s https://raw.githubusercontent.com/colizz/Customized_NanoAOD/master/PhysicsTools/NanoTuples/scripts/install_onnxruntime.sh)
 ```
 
 

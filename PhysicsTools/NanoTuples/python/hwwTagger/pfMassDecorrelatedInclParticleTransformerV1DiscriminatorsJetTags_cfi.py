@@ -50,7 +50,7 @@ pfMassDecorrelatedInclParticleTransformerV1DiscriminatorsJetTags = cms.EDProduce
             ),
          ),
       cms.PSet(
-         name = cms.string('HWW3qvsQCD'),
+         name = cms.string('HWW4q3qvsQCD'),
          numerator = cms.VInputTag(
             cms.InputTag('pfMassDecorrelatedInclParticleTransformerV1JetTags', 'probHWqqWqq0c'),
             cms.InputTag('pfMassDecorrelatedInclParticleTransformerV1JetTags', 'probHWqqWqq1c'),
