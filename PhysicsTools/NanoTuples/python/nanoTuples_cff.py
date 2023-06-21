@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 from PhysicsTools.NanoAOD.common_cff import Var
 from PhysicsTools.NanoTuples.ak15_cff import setupAK15
-from PhysicsTools.NanoTuples.ak8_cff import addParticleNetAK8, getCustomTaggerDiscriminators, addCustomTagger
+from PhysicsTools.NanoTuples.ak8_cff import addParticleNetAK8, getCustomTaggerDiscriminatorsAK8, addCustomTaggerAK8
 from PhysicsTools.NanoTuples.pfcands_cff import addPFCands
 
 
@@ -64,7 +64,7 @@ def nanoTuples_addParticleNetRawScore(process, addParticleNetProbs=False):
 
     return process
 
-def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, addPFcands=False,  AddDeepAK8RawScore=True, addParticleNetRawScore=True, customTaggers=[]):
+def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, addPFcands=False, addDeepAK8RawScore=True, addParticleNetRawScore=True, customAK8Taggers=[]):
     pfcand_params = {'srcs': [], 'isPuppiJets':[], 'jetTables':[]}
     if addAK15:
         setupAK15(process, runOnMC=runOnMC, runParticleNet=False, runParticleNetMD=True)
@@ -76,18 +76,16 @@ def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, add
         pfcand_params['srcs'].append('updatedJetsAK8WithUserData')
         pfcand_params['isPuppiJets'].append(True)
         pfcand_params['jetTables'].append('fatJetTable')
-    tag_discs = []
-    for name in customTaggers:
-        tag_discs += getCustomTaggerDiscriminators(process, name)
-    if len(tag_discs) > 0:
-        addCustomTagger(process, tag_discs)
+    if len(customAK8Taggers) > 0:
+        tag_discs = sum([getCustomTaggerDiscriminatorsAK8(process, name) for name in customAK8Taggers], [])
+        addCustomTaggerAK8(process, tag_discs)
         pfcand_params['srcs'].append('updatedJetsAK8WithUserData')
         pfcand_params['isPuppiJets'].append(True)
         pfcand_params['jetTables'].append('fatJetTable')
     if addPFcands:
         addPFCands(process, outTableName='PFCands', **pfcand_params)
 
-    if AddDeepAK8RawScore:
+    if addDeepAK8RawScore:
         nanoTuples_addDeepAK8RawScore(process, addDeepAK8Probs=True)
     if addParticleNetRawScore:
         nanoTuples_addParticleNetRawScore(process, addParticleNetProbs=True)
@@ -98,7 +96,7 @@ def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, add
 
 
 def nanoTuples_customizeData(process):
-    process = nanoTuples_customizeCommon(process, False, addAK15=False, addAK8=False, addPFcands=False, AddDeepAK8RawScore=True, addParticleNetRawScore=True, customTaggers=['DeepHWWV1', 'InclParticleTransformerV1'])
+    process = nanoTuples_customizeCommon(process, False, addAK15=False, addAK8=False, addPFcands=False, addDeepAK8RawScore=True, addParticleNetRawScore=True, customAK8Taggers=['DeepHWWV1', 'InclParticleTransformerV1'])
 
     process.NANOAODoutput.fakeNameForCrab = cms.untracked.bool(True)  # hack for crab publication
     process.add_(cms.Service("InitRootHandlers", EnableIMT=cms.untracked.bool(False)))
@@ -106,7 +104,7 @@ def nanoTuples_customizeData(process):
 
 
 def nanoTuples_customizeMC(process):
-    process = nanoTuples_customizeCommon(process, True, addAK15=True, addAK8=False, addPFcands=False, AddDeepAK8RawScore=True, addParticleNetRawScore=True, customTaggers=['DeepHWWV1', 'InclParticleTransformerV1'])
+    process = nanoTuples_customizeCommon(process, True, addAK15=True, addAK8=False, addPFcands=False, addDeepAK8RawScore=True, addParticleNetRawScore=True, customAK8Taggers=['DeepHWWV1', 'InclParticleTransformerV1'])
 
     process.NANOAODSIMoutput.fakeNameForCrab = cms.untracked.bool(True)  # hack for crab publication
     process.add_(cms.Service("InitRootHandlers", EnableIMT=cms.untracked.bool(False)))

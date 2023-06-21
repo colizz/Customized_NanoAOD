@@ -62,7 +62,7 @@ def addParticleNetAK8(process, runParticleNet=False, runParticleNetMD=True):
     return process
 
 
-def getCustomTaggerDiscriminators(process, name):
+def getCustomTaggerDiscriminatorsAK8(process, name):
     customTaggersAvailableDict = {
         'DeepHWWV1': {
             'cff_path': 'PhysicsTools.NanoTuples.hwwTagger.pfMassDecorrelatedDeepHWWV1_cff',
@@ -73,7 +73,12 @@ def getCustomTaggerDiscriminators(process, name):
             'cff_path': 'PhysicsTools.NanoTuples.hwwTagger.pfMassDecorrelatedInclParticleTransformerV1_cff',
             'disc_name': '_pfMassDecorrelatedInclParticleTransformerV1JetTagsAll',
             'nano_branch_name': 'inclParTMDV1',
-        }
+        },
+        'InclParticleTransformerV2': {
+            'cff_path': 'PhysicsTools.NanoTuples.hwwTagger.pfMassDecorrelatedInclParticleTransformerV2_cff',
+            'disc_name': '_pfMassDecorrelatedInclParticleTransformerV2JetTagsAll',
+            'nano_branch_name': 'inclParTMDV2',
+        },
     }
     if name not in customTaggersAvailableDict:
         raise ValueError("the specified tagger '%s' does not exist." % name)
@@ -90,7 +95,7 @@ def getCustomTaggerDiscriminators(process, name):
     return btagDiscriminators
 
 
-def addCustomTagger(process, tag_discs):
+def addCustomTaggerAK8(process, tag_discs):
     from PhysicsTools.NanoTuples.jetTools import updateJetCollection as updateJetCollectionCustom
     JETCorrLevels = ['L2Relative', 'L3Absolute', 'L2L3Residual']
     # inference the tagger score

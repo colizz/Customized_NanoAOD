@@ -43,7 +43,14 @@ cmsenv
 ### Get customized NanoAOD producers
 
 ```bash
-git clone https://github.com/hqucms/NanoTuples.git PhysicsTools/NanoTuples -b dev/NanoAODv8
+# note the original repo is in https://github.com/hqucms/NanoTuples.git !!
+git clone https://github.com/colizz/Customized_NanoAOD.git PhysicsTools/NanoTuples -b dev/NanoAODv8
+```
+
+### Use an updated onnxruntime package (before compiling the code)
+
+```bash
+./PhysicsTools/NanoTuples/scripts/install_onnxruntime.sh
 ```
 
 ### Compile
@@ -90,22 +97,19 @@ less +F test_data2017.log
 -->
 
 
-MC (UL18, MiniAODv1):
+MC (UL18, MiniAODv2):
 
 ```bash
-cmsDriver.py test_nanoTuples_mc2018 -n 1000 --mc --eventcontent NANOAODSIM --datatier NANOAODSIM --conditions 106X_upgrade2018_realistic_v15_L1v1 --step NANO --nThreads 1 --era Run2_2018,run2_nanoAOD_106Xv1 --customise PhysicsTools/NanoTuples/nanoTuples_cff.nanoTuples_customizeMC --filein /store/mc/RunIISummer19UL18MiniAOD/GluGluToBulkGravitonToHHTo4B_M-1000_narrow_WZHtag_TuneCP5_PSWeights_13TeV-madgraph-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v1/20000/86AAB896-106A-4D4E-9657-DDB87FAFD1EE.root --fileout file:nano_mc2018.root --customise_commands "process.options.wantSummary = cms.untracked.bool(True)" >& test_mc2018.log &
-
-less +F test_mc2018.log
+cmsDriver.py --python_filename test_nanoTuples_mc2018.py --eventcontent NANOAODSIM --customise PhysicsTools/NanoTuples/nanoTuples_cff.nanoTuples_customizeMC --datatier NANOAODSIM --fileout file:nano_mc2018.root --conditions 106X_upgrade2018_realistic_v16_L1v1 --step NANO --filein /store/mc/RunIISummer20UL18MiniAODv2/WplusH_HToCC_WToLNu_M-125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v1/2520000/A4FFC5A7-79DF-FE4B-A515-1F3EA0513509.root --era Run2_2018,run2_nanoAOD_106Xv2 --mc -n 50
 ```
 
-Data (UL18, MiniAODv1):
+Data (UL18, MiniAODv2):
 
 ```bash
-cmsDriver.py test_nanoTuples_data2018abc -n 1000 --data --eventcontent NANOAOD --datatier NANOAOD --conditions 106X_dataRun2_v32 --step NANO --nThreads 1 --era Run2_2018,run2_nanoAOD_106Xv1 --customise PhysicsTools/NanoTuples/nanoTuples_cff.nanoTuples_customizeData --filein /store/data/Run2018D/JetHT/MINIAOD/12Nov2019_UL2018_rsb-v1/270000/100C831A-70F3-B645-8D7D-0A4474767984.root --fileout file:nano_data2018.root --customise_commands "process.options.wantSummary = cms.untracked.bool(True)" >& test_data2018.log &
-
-less +F test_data2018.log
+cmsDriver.py --python_filename test_nanoTuples_data2018.py --eventcontent NANOAOD --customise PhysicsTools/NanoTuples/nanoTuples_cff.nanoTuples_customizeData --datatier NANOAOD --fileout file:nano_data2018.root --conditions 106X_dataRun2_v37 --step NANO --filein /store/data/Run2018A/SingleMuon/MINIAOD/UL2018_MiniAODv2_GT36-v1/2820000/000EE25A-A8E8-1444-8A0B-0DBEBE5634FB.root --era Run2_2018,run2_nanoAOD_106Xv2 --data -n 50
 ```
 
+<!--
 ------
 
 ## Production
@@ -219,3 +223,5 @@ More options of this `crab.py` script can be found with:
 ```bash
 ./crab.py -h
 ```
+
+-->
