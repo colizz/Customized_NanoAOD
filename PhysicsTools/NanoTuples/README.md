@@ -2,6 +2,8 @@
 
 Custom NanoAOD ntuple producers with additional boosted jet taggers and their PF candidates.
 
+Original repo in https://github.com/hqucms/NanoTuples/tree/dev/NanoAODv8 !!
+
 <!-- TOC -->
 
 - [NanoTuples](#nanotuples)
@@ -19,7 +21,7 @@ Custom NanoAOD ntuple producers with additional boosted jet taggers and their PF
 
 ## Version
 
-The current version is based on [NanoAODv8](https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv8).
+The current version is based on [NanoAODv9](https://gitlab.cern.ch/cms-nanoAOD/nanoaod-doc/-/wikis/Releases/NanoAODv9).
 
 Customizations:
 
@@ -33,8 +35,8 @@ Customizations:
 ### Set up CMSSW
 
 ```bash
-cmsrel CMSSW_10_6_19_patch2
-cd CMSSW_10_6_19_patch2/src
+cmsrel CMSSW_10_6_31
+cd CMSSW_10_6_31/src
 cmsenv
 ```
 
