@@ -64,10 +64,10 @@ def nanoTuples_addParticleNetRawScore(process, addParticleNetProbs=False):
 
     return process
 
-def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, addPFcands=False, addDeepAK8RawScore=True, addParticleNetRawScore=True, customAK8Taggers=[]):
+def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, addPFcands=False, addDeepAK8RawScore=True, addParticleNetRawScore=True, customAK8Taggers=[], customAK15Taggers=[]):
     pfcand_params = {'srcs': [], 'isPuppiJets':[], 'jetTables':[]}
     if addAK15:
-        setupAK15(process, runOnMC=runOnMC, runParticleNet=False, runParticleNetMD=True)
+        setupAK15(process, runOnMC=runOnMC, runParticleNet=False, runParticleNetMD=True, customAK15Taggers=customAK15Taggers)
         pfcand_params['srcs'].append('ak15WithUserData')
         pfcand_params['isPuppiJets'].append(True)
         pfcand_params['jetTables'].append('ak15Table')
@@ -96,7 +96,7 @@ def nanoTuples_customizeCommon(process, runOnMC, addAK15=True, addAK8=False, add
 
 
 def nanoTuples_customizeData(process):
-    process = nanoTuples_customizeCommon(process, False, addAK15=False, addAK8=False, addPFcands=False, addDeepAK8RawScore=True, addParticleNetRawScore=True, customAK8Taggers=['DeepHWWV1', 'InclParticleTransformerV1'])
+    process = nanoTuples_customizeCommon(process, False, addAK15=True, addAK8=False, addPFcands=False, addDeepAK8RawScore=False, addParticleNetRawScore=False, customAK8Taggers=[], customAK15Taggers=['InclParticleTransformerAK15V2'])
 
     process.NANOAODoutput.fakeNameForCrab = cms.untracked.bool(True)  # hack for crab publication
     process.add_(cms.Service("InitRootHandlers", EnableIMT=cms.untracked.bool(False)))
@@ -104,7 +104,7 @@ def nanoTuples_customizeData(process):
 
 
 def nanoTuples_customizeMC(process):
-    process = nanoTuples_customizeCommon(process, True, addAK15=True, addAK8=False, addPFcands=False, addDeepAK8RawScore=True, addParticleNetRawScore=True, customAK8Taggers=['DeepHWWV1', 'InclParticleTransformerV1'])
+    process = nanoTuples_customizeCommon(process, True, addAK15=True, addAK8=False, addPFcands=False, addDeepAK8RawScore=False, addParticleNetRawScore=False, customAK8Taggers=[], customAK15Taggers=['InclParticleTransformerAK15V2'])
 
     process.NANOAODSIMoutput.fakeNameForCrab = cms.untracked.bool(True)  # hack for crab publication
     process.add_(cms.Service("InitRootHandlers", EnableIMT=cms.untracked.bool(False)))

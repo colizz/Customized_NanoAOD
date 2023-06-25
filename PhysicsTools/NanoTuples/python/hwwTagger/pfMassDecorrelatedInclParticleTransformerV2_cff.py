@@ -11,8 +11,8 @@ pfMassDecorrelatedInclParticleTransformerV2TagInfos = pfParticleTransformerV2Jet
 
 pfMassDecorrelatedInclParticleTransformerV2JetTags = boostedJetONNXJetTagsProducer.clone(
     src = 'pfMassDecorrelatedInclParticleTransformerV2TagInfos',
-    preprocess_json = 'PhysicsTools/NanoTuples/data/InclParticleTransformer-MD/ak8/V02-N/preprocess_corr.json',
-    model_path = 'PhysicsTools/NanoTuples/data/InclParticleTransformer-MD/ak8/V02-N/model.onnx',
+    preprocess_json = 'PhysicsTools/NanoTuples/data/InclParticleTransformer-MD/ak8/V02/preprocess_corr.json',
+    model_path = 'PhysicsTools/NanoTuples/data/InclParticleTransformer-MD/ak8/V02/model.onnx',
     flav_names = [
         'probTopbWcs', 'probTopbWqq', 'probTopbWc', 'probTopbWs', 'probTopbWq', 'probTopbWev', 'probTopbWmv', 'probTopbWtauev', 'probTopbWtaumv', 'probTopbWtauhv', 
         'probTopWcs', 'probTopWqq', 'probTopWev', 'probTopWmv', 'probTopWtauev', 'probTopWtaumv', 'probTopWtauhv', 
@@ -44,3 +44,35 @@ _pfMassDecorrelatedInclParticleTransformerV2JetTagsMetaDiscrs = ['pfMassDecorrel
                                       for disc in pfMassDecorrelatedInclParticleTransformerV2DiscriminatorsJetTags.discriminators]
 
 _pfMassDecorrelatedInclParticleTransformerV2JetTagsAll = _pfMassDecorrelatedInclParticleTransformerV2JetTagsProbs + _pfMassDecorrelatedInclParticleTransformerV2JetTagsMetaDiscrs
+
+
+# ===========================================================================================
+# For AK15 jets:
+# obtain tag infos with radius 1.5, then inference with the model trained with radius 1.5 jets
+
+pfMassDecorrelatedInclParticleTransformerAK15V2TagInfos = pfParticleTransformerV2JetTagInfos.clone(
+    use_puppiP4 = False,
+    jet_radius = 1.5,
+)
+
+pfMassDecorrelatedInclParticleTransformerAK15V2JetTags = pfMassDecorrelatedInclParticleTransformerV2JetTags.clone(
+    src = 'pfMassDecorrelatedInclParticleTransformerAK15V2TagInfos',
+    preprocess_json = 'PhysicsTools/NanoTuples/data/InclParticleTransformer-MD/ak15/V02/preprocess_corr.json',
+    model_path = 'PhysicsTools/NanoTuples/data/InclParticleTransformer-MD/ak15/V02/model.onnx',
+)
+
+# declare all the discriminators
+# probs
+_pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsProbs = ['pfMassDecorrelatedInclParticleTransformerAK15V2JetTags:' + flav_name
+                                 for flav_name in pfMassDecorrelatedInclParticleTransformerAK15V2JetTags.flav_names]
+
+_pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsProbsSelected = ['pfMassDecorrelatedInclParticleTransformerAK15V2JetTags:' + flav_name
+                                 for flav_name in ['probHbb', 'probHcc', 'probHss', 'probHqq', 'probHbc', 'probHbs', 'probHcs', 'probHgg', 'probHee', 'probHmm', 'probHtauhtaue', 'probHtauhtaum', 'probHtauhtauh', 
+                                                   'probQCDbb', 'probQCDcc', 'probQCDb', 'probQCDc', 'probQCDothers', 
+                                                   'resonanceMassCorr', 'visiableMassCorr']]
+# meta-taggers
+_pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsMetaDiscrs = ['pfMassDecorrelatedInclParticleTransformerAK15V2DiscriminatorsJetTags:' + disc.name.value()
+                                      for disc in pfMassDecorrelatedInclParticleTransformerV2DiscriminatorsJetTags.discriminators]
+
+_pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsAll = _pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsProbs + _pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsMetaDiscrs
+_pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsAllSelected = _pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsProbsSelected + _pfMassDecorrelatedInclParticleTransformerAK15V2JetTagsMetaDiscrs
