@@ -44,7 +44,7 @@ cmsenv
 
 ```bash
 # note the original repo is in https://github.com/hqucms/NanoTuples.git !!
-git clone https://github.com/colizz/Customized_NanoAOD.git PhysicsTools/NanoTuples -b dev-ak15tagger
+git clone https://github.com/colizz/Customized_NanoAOD.git . -b dev-ak15tagger
 ```
 
 ### Use an updated onnxruntime package (before compiling the code)
