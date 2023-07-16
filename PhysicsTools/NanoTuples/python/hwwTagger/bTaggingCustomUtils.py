@@ -8,6 +8,7 @@ def updateSupportedBtagDiscr(supportedBtagInfos, supportedBtagDiscr, supportedMe
     # update supportedBtagDiscr
     supportedBtagInfos.extend(["pfMassDecorrelatedDeepHWWV1TagInfos"])
     supportedBtagInfos.extend(["pfMassDecorrelatedInclParticleTransformerV1TagInfos"])
+    supportedBtagInfos.extend(["pfMassDecorrelatedInclParticleTransformerV2TagInfos"])
     for disc in _pfMassDecorrelatedDeepHWWV1JetTagsProbs + _pfMassDecorrelatedDeepHWWV1JetTagsMetaDiscrs:
         supportedBtagDiscr[disc] = [["pfMassDecorrelatedDeepHWWV1TagInfos"]]
     for disc in _pfMassDecorrelatedInclParticleTransformerV1JetTagsProbs + _pfMassDecorrelatedInclParticleTransformerV1JetTagsMetaDiscrs:

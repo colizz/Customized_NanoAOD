@@ -395,8 +395,8 @@
         "pad": 0
       },
       "cpfcandlt_abseta": {
-        "median": 0.6,
-        "norm_factor": 1.6,
+        "median": 0.7,
+        "norm_factor": 1.4,
         "replace_inf_value": 0,
         "lower_bound": -5,
         "upper_bound": 5,
@@ -476,7 +476,7 @@
       },
       "cpfcandlt_dz": {
         "median": 0,
-        "norm_factor": 180,
+        "norm_factor": 130,
         "replace_inf_value": 0,
         "lower_bound": -5,
         "upper_bound": 5,
@@ -484,7 +484,7 @@
       },
       "cpfcandlt_dzsig": {
         "median": 0,
-        "norm_factor": 0.9,
+        "norm_factor": 1.2,
         "replace_inf_value": 0,
         "lower_bound": -5,
         "upper_bound": 5,
@@ -492,7 +492,7 @@
       },
       "cpfcandlt_dxy": {
         "median": 0.0,
-        "norm_factor": 300,
+        "norm_factor": 200,
         "replace_inf_value": 0,
         "lower_bound": -5,
         "upper_bound": 5,
@@ -500,7 +500,7 @@
       },
       "cpfcandlt_dxysig": {
         "median": 0,
-        "norm_factor": 1.0,
+        "norm_factor": 1.6,
         "replace_inf_value": 0,
         "lower_bound": -5,
         "upper_bound": 5,
@@ -603,7 +603,7 @@
         "pad": 0
       }
     },
-    "max_length": 90,
+    "max_length": 110,
     "min_length": 12
   },
   "cpf_vectors": {
@@ -647,7 +647,7 @@
         "pad": 0
       }
     },
-    "max_length": 90,
+    "max_length": 110,
     "min_length": 12
   },
   "cpf_mask": {
@@ -664,7 +664,7 @@
         "pad": 0
       }
     },
-    "max_length": 90,
+    "max_length": 110,
     "min_length": 12
   },
   "npf_features": {
@@ -711,8 +711,8 @@
         "pad": 0
       },
       "npfcand_abseta": {
-        "median": 0.6,
-        "norm_factor": 1.6,
+        "median": 0.7,
+        "norm_factor": 1.4,
         "replace_inf_value": 0,
         "lower_bound": -5,
         "upper_bound": 5,
@@ -735,7 +735,7 @@
         "pad": 0
       }
     },
-    "max_length": 60,
+    "max_length": 75,
     "min_length": 8
   },
   "npf_vectors": {
@@ -779,7 +779,7 @@
         "pad": 0
       }
     },
-    "max_length": 60,
+    "max_length": 75,
     "min_length": 8
   },
   "npf_mask": {
@@ -796,7 +796,7 @@
         "pad": 0
       }
     },
-    "max_length": 60,
+    "max_length": 75,
     "min_length": 8
   },
   "sv_features": {
