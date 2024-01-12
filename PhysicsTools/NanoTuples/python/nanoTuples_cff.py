@@ -106,7 +106,7 @@ def nanoTuples_customizeData(process):
 
 
 def nanoTuples_customizeMC(process):
-    process = nanoTuples_customizeCommon(process, True, addAK15=True, addAK8=False, addPFcands=False, AddDeepAK8RawScore=True, addParticleNetRawScore=True, customTaggers=['DeepHWWV1', 'InclParticleTransformerV1'])
+    process = nanoTuples_customizeCommon(process, True, addAK15=False, addAK8=False, addPFcands=False, AddDeepAK8RawScore=True, addParticleNetRawScore=True, customTaggers=['DeepHWWV1', 'InclParticleTransformerV1'])
 
     process.NANOAODSIMoutput.fakeNameForCrab = cms.untracked.bool(True)  # hack for crab publication
     process.add_(cms.Service("InitRootHandlers", EnableIMT=cms.untracked.bool(False)))
